@@ -1,64 +1,188 @@
-* {
-    background: white;
-    color: #1d2f6f;
+/* index.css */
 
-    font-size: 2.5rem;
-    font-weight: bold;
-    letter-spacing: 4px;
-
-    cursor: pointer;
-
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-    transition: 0.2s ease;
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-.start-button:hover {
-    transform: scale(1.03);
-    background: #1d2f6f;
-    color: white;
+:root {
+    --accent: #48BF91;
+    --dark: #0a0a0f;
+    --light: #f0ece3;
+    --banner-bg: rgba(10, 10, 15, 0.72);
 }
 
-.kill-button {
+html, body {
+    height: 100%;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+/* ── ACHTERGROND ── */
+.bg {
+    position: fixed;
+    inset: 0;
+    background:
+    url('../foto/5_Vrijdag/11_33_50_id7157.jpg')
+    center / cover no-repeat;
+    z-index: 0;
+}
+
+.bg::after {
+    content: '';
     position: absolute;
-    top: 30px;
-    right: 30px;
+    inset: 0;
+    background: linear-gradient(
+    160deg,
+    rgba(10,10,15,.55) 0%,
+    rgba(10,10,15,.25) 50%,
+    rgba(10,10,15,.70) 100%
+    );
+}
 
-    z-index: 3;
+/* ── WRAPPER ── */
+.page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    padding: 2rem;
+}
 
-    width: 140px;
-    height: 55px;
+/* ── BANNER "KLIK OP START" ── */
+.banner {
+    position: relative;
+    width: min(520px, 90vw);
+    border: 2px solid var(--accent);
+    background: var(--banner-bg);
+    backdrop-filter: blur(6px);
+    overflow: hidden;
+    border-radius: 2px;
+    box-shadow: 0 4px 32px rgba(0,0,0,.5), inset 0 0 40px rgba(232,201,106,.06);
+    animation: fadeDown .8s ease both;
+}
 
-    border: 4px solid #1d2f6f;
-    border-radius: 15px;
+.banner-img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%
+    center / cover no-repeat; 
+    opacity: .65;
+}
 
-    background: white;
-    color: #1d2f6f;
+.banner-img::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--banner-bg) 0%, transparent 60%);
+}
 
-    font-size: 0.9rem;
-    font-weight: bold;
+.banner-text {
+    position: relative;
+    z-index: 1;
+    padding: 1rem 1.6rem;
+}
 
+.banner-text p {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    letter-spacing: .18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.banner-text span {
+    display: block;
+    font-size: .78rem;
+    letter-spacing: .25em;
+    color: rgba(240,236,227,.55);
+    margin-top: .25rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+}
+
+/* ── START KNOP ── */
+.btn-start {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: min(340px, 80vw);
+    padding: 1.1rem 2rem;
+    background: transparent;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 6vw, 3.2rem);
+    letter-spacing: .25em;
     cursor: pointer;
-
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    overflow: hidden;
+    transition: color .3s;
+    text-decoration: none;
+    animation: fadeUp .9s .2s ease both, pulse 2.5s 1.2s infinite;
 }
 
-.kill-button:hover {
-    background: #1d2f6f;
-    color: white;
+/* fill sweep op hover */
+.btn-start::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .35s cubic-bezier(.76,0,.24,1);
+    z-index: 0;
 }
 
-@media (max-width: 900px) {
-    .start-button {
-        width: 300px;
-        height: 140px;
-        font-size: 3rem;
-    }
+.btn-start:hover::before {
+    transform: scaleX(1);
+}
 
-    .kill-button {
-        width: 140px;
-        height: 60px;
-        top: 30px;
-        right: 30px;
-        font-size: 1rem;
-    }
+.btn-start:hover {
+    color: var(--dark);
+}
+
+.btn-start span {
+    position: relative;
+    z-index: 1;
+}
+
+/* hoek accent */
+.btn-start::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transition: border-color .3s;
+}
+
+.btn-start:hover::after {
+    border-color: var(--dark);
+}
+
+/* ── ANIMATIES ── */
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(232,201,106,.4); }
+    50%       { box-shadow: 0 0 0 10px rgba(232,201,106,0); }
 }
