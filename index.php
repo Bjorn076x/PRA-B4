@@ -19,7 +19,7 @@
     </button>
 
     <button class="start-button" onclick="startKiosk()">
-        START
+        <a href="photo.php">START</a>
     </button>
 
 </div>
@@ -27,8 +27,7 @@
 <script>
     function startKiosk() {
         alert('Foto kiosk gestart');
-
-        // window.location.href = 'camera.php';
+        //photo.php
     }
 
     function killKiosk() {
