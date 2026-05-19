@@ -1,18 +1,18 @@
 <?php
 session_start();
 
-if (!isset($_GET['id'])) {
+if (!isset($_GET['file'])) {
     header("Location: photo.php");
     exit;
 }
 
-$id = intval($_GET['id']);
+$file = $_GET['file'];
 
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-$_SESSION['cart'][] = $id;
+$_SESSION['cart'][] = $file;
 
 header("Location: cart.php");
 exit;

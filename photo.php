@@ -1,13 +1,64 @@
 <?php
-// Database connectie
-$conn = new mysqli("localhost", "root", "", "fotokiosk");
 
-// Tijd 10 minuten geleden
-$tenMinutesAgo = date("Y-m-d H:i:s", time() - 600);
+// Functie: tijd sinds foto
+function timeAgoString($timestamp) {
+    $now = time();
+    $diff = $now - $timestamp;
 
-// Foto’s ophalen
-$sql = "SELECT * FROM photos WHERE created_at >= '$tenMinutesAgo' ORDER BY created_at DESC";
-$result = $conn->query($sql);
+    $hours = floor($diff / 3600);
+    $minutes = floor(($diff % 3600) / 60);
+    $seconds = $diff % 60;
+
+    return "$hours uur, $minutes minuten en $seconds seconden geleden";
+}
+
+// Nederlandse dagen
+$daysNL = [
+    "Monday" => "Maandag",
+    "Tuesday" => "Dinsdag",
+    "Wednesday" => "Woensdag",
+    "Thursday" => "Donderdag",
+    "Friday" => "Vrijdag",
+    "Saturday" => "Zaterdag",
+    "Sunday" => "Zondag"
+];
+
+$baseFolder = "foto";
+$tenMinutesAgo = time() - 600;
+$photos = [];
+
+$folders = array_filter(glob($baseFolder . '/*'), 'is_dir');
+
+foreach ($folders as $folder) {
+
+    foreach (glob($folder . "/*.{jpg,jpeg,png,JPG,JPEG,PNG}", GLOB_BRACE) as $file) {
+
+        $filename = basename($file);
+
+        // Tijd uit bestandsnaam halen: HH_MM_SS
+        if (preg_match('/(\d{2})_(\d{2})_(\d{2})/', $filename, $match)) {
+
+            $hour = intval($match[1]);
+            $minute = intval($match[2]);
+            $second = intval($match[3]);
+
+            // Timestamp van vandaag
+            $timestamp = strtotime(date("Y-m-d") . " $hour:$minute:$second");
+
+            // Alleen foto's van de laatste 10 minuten
+            if ($timestamp >= $tenMinutesAgo) {
+                $photos[] = [
+                    "path" => $file,
+                    "time" => $timestamp
+                ];
+            }
+        }
+    }
+}
+
+usort($photos, function($a, $b) {
+    return $b["time"] - $a["time"];
+});
 ?>
 
 <!DOCTYPE html>
@@ -15,58 +66,30 @@ $result = $conn->query($sql);
 <head>
 <meta charset="UTF-8">
 <title>Achtbaan Foto's</title>
-
-<style>
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px;
-}
-.grid img {
-    width: 100%;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.grid img:hover {
-    transform: scale(1.05);
-}
-
-/* Pop-up */
-#popup {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
-}
-#popupContent {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-}
-#popupContent img {
-    max-width: 400px;
-    border-radius: 10px;
-}
-</style>
-
+<link rel="stylesheet" href="css/photo.css">
 </head>
 <body>
 
 <h2>📸 Foto’s van de afgelopen 10 minuten</h2>
 
 <div class="grid">
-<?php while ($row = $result->fetch_assoc()): ?>
-    <img src="uploads/<?php echo $row['filename']; ?>" 
-         onclick="openPopup('uploads/<?php echo $row['filename']; ?>', <?php echo $row['id']; ?>)">
-<?php endwhile; ?>
+<?php foreach ($photos as $p): 
+    $timestamp = $p["time"];
+    $day = date("l", $timestamp);
+    $dayNL = $daysNL[$day];
+    $timeAgo = timeAgoString($timestamp);
+?>
+    <div class="photoItem">
+        <img src="<?php echo $p['path']; ?>" 
+             onclick="openPopup('<?php echo $p['path']; ?>')">
+
+        <p class="timeLabel">
+            <?php echo "$dayNL – $timeAgo"; ?>
+        </p>
+    </div>
+<?php endforeach; ?>
 </div>
 
-<!-- Pop-up -->
 <div id="popup">
     <div id="popupContent">
         <img id="popupImage">
@@ -78,11 +101,11 @@ $result = $conn->query($sql);
 </div>
 
 <script>
-let selectedPhotoId = null;
+let selectedPhoto = null;
 
-function openPopup(src, id) {
+function openPopup(src) {
+    selectedPhoto = src;
     document.getElementById("popupImage").src = src;
-    selectedPhotoId = id;
     document.getElementById("popup").style.display = "flex";
 }
 
@@ -91,7 +114,7 @@ function closePopup() {
 }
 
 function addToCart() {
-    window.location.href = "cart_add.php?id=" + selectedPhotoId;
+    window.location.href = "add_cart.php?file=" + encodeURIComponent(selectedPhoto);
 }
 </script>
 
