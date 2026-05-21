@@ -7,31 +7,21 @@
     <link rel="stylesheet" href="css/choice.css">
 </head>
 
-<body>
-
-    <header>
-
-    </header>
-    
-    <main>
+<body class="bg">
+    <header></header>
 
     <div class="container">
-        <div class="pic_vergeten">
-            <img src="https://placehold.co/400x200" alt="">
-            <button>Foto vergeten?</button>
+
+        <div class="card">
+            <img src="img/UGF2S0d5VFFuRy9CWGhGMHhKSGZKekdBTHEyNTY2TTZwNzFtWWNvZ0lKdkRhc05JQzRGbEFFZmtHdDZKODdBNER2TTBUYlI5Y2FWMUdsaWUvRkJYY3U5QjM5NXNFNjdxNDVhTHlOc1lUa0k9.jpg" alt="Foto vergeten">
+            <button class="action-btn">Foto vergeten?</button>
         </div>
 
-        <div class="pic_afdrukken">
-            <img src="https://placehold.co/400x200" alt="">
-            <button>Foto afdrukken?</button>
+        <div class="card">
+            <img src="img/cfe3a0ca6d6e89cd8ee075a5d75ec9f4.jpg" alt="Foto afdrukken">
+            <button class="action-btn">Foto afdrukken?</button>
         </div>
+
     </div>
-
-    </main>
-
-    <footer>
-
-    </footer>
-
 </body>
 </html>
