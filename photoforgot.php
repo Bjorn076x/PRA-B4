@@ -1,5 +1,5 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "jouw_database_naam");
+$conn = new mysqli("localhost", "root", "", "fotokiosk");
 
 if ($conn->connect_error) {
     die("Verbinding mislukt: " . $conn->connect_error);
@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tijd = $_POST['tijd'] ?? '';
     $searched = true;
 
-    // Example query — adjust table/column names to yours
     $stmt = $conn->prepare("SELECT * FROM fotos WHERE datum = ? AND tijd = ?");
     $stmt->bind_param("ss", $datum, $tijd);
     $stmt->execute();

@@ -12,12 +12,10 @@
 </head>
 <body>
 
-    <!-- Achtergrondafbeelding -->
     <div class="bg"></div>
 
         <div class="page">
 
-        <!-- Banner met tekst + decoratief plaatje -->
         <div class="banner">
             <div class="banner-text">
                 <p>Klik op Start</p>
@@ -26,7 +24,6 @@
         <div class="banner-img"></div>
     </div>
 
-    <!-- START knop -->
     <button class="btn-start" onclick="alert('Gestart!')">
         <span>START</span>
     </button>
