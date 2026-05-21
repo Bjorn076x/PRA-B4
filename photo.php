@@ -1,11 +1,4 @@
 <?php
-
-$testFiles = glob("foto/4_Donderdag/*.jpg");
-foreach(array_slice($testFiles, 0, 5) as $f) {
-    echo basename($f) . "<br>";
-}
-die();
-
 date_default_timezone_set('Europe/Amsterdam');
 
 // Dag van vandaag → juiste submap
@@ -31,19 +24,28 @@ $dagNL = [
     "6_Zaterdag"  => "Zaterdag"
 ];
 
-$baseFolder    = "foto";
-$todayFolder   = $baseFolder . "/" . $dayNames[$dayIndex];
-$photos        = [];
+$baseFolder  = "foto";
+$todayFolder = $baseFolder . "/" . $dayNames[$dayIndex];
+$photos      = [];
+
+$tenMinutesAgo = time() - 600;
 
 // Controleer of de map bestaat
 if (is_dir($todayFolder)) {
     foreach (glob($todayFolder . "/*.{jpg,jpeg,png,JPG,JPEG,PNG}", GLOB_BRACE) as $file) {
 
-        // Tijd uit bestandsnaam gebruiken voor weergave
-        if (preg_match('/(\d{2})_(\d{2})_(\d{2})/', basename($file), $match)) {
+        $filename  = basename($file);
+        $fileTime  = filemtime($file);
+
+        // Alleen foto's waarvan het bestand de laatste 10 minuten op de server is gezet
+        if ($fileTime < $tenMinutesAgo) continue;
+
+        // Tijd uit bestandsnaam halen voor weergave
+        if (preg_match('/(\d{2})_(\d{2})_(\d{2})/', $filename, $match)) {
             $hour   = intval($match[1]);
             $minute = intval($match[2]);
             $second = intval($match[3]);
+
             $photos[] = [
                 "path"   => $file,
                 "hour"   => $hour,
