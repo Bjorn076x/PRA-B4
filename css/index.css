@@ -23,7 +23,7 @@ html, body {
     position: fixed;
     inset: 0;
     background:
-    url('../foto/5_Vrijdag/11_33_50_id7157.jpg')
+    url('../img/achtbaan.avif')
     center / cover no-repeat;
     z-index: 0;
 }
@@ -71,7 +71,9 @@ html, body {
     right: 0;
     top: 0;
     bottom: 0;
-    width: 100%
+    width: 100%;
+    background-image: 
+    url('../img/logo-big-v4.png')
     center / cover no-repeat; 
     opacity: .65;
 }
