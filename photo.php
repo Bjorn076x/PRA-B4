@@ -1,46 +1,36 @@
 <?php
 date_default_timezone_set('Europe/Amsterdam');
 
-// Dag van vandaag → juiste submap
-$nowAMS   = new DateTime('now', new DateTimeZone('Europe/Amsterdam'));
-$dayIndex = (int)$nowAMS->format('w');
-$dayNames = [
-    "0_Zondag",
-    "1_Maandag",
-    "2_Dinsdag",
-    "3_Woensdag",
-    "4_Donderdag",
-    "5_Vrijdag",
-    "6_Zaterdag"
-];
+// Alle dagmappen in /foto ophalen
+$baseFolder = "foto";
+$folders    = glob($baseFolder . "/*", GLOB_ONLYDIR);
 
-$dagNL = [
-    "0_Zondag"    => "Zondag",
-    "1_Maandag"   => "Maandag",
-    "2_Dinsdag"   => "Dinsdag",
-    "3_Woensdag"  => "Woensdag",
-    "4_Donderdag" => "Donderdag",
-    "5_Vrijdag"   => "Vrijdag",
-    "6_Zaterdag"  => "Zaterdag"
-];
-
-$baseFolder  = "foto";
-$todayFolder = $baseFolder . "/" . $dayNames[$dayIndex];
-$photos      = [];
-
+$photos = [];
 $tenMinutesAgo = time() - 600;
 
-// Controleer of de map bestaat
-if (is_dir($todayFolder)) {
-    foreach (glob($todayFolder . "/*.{jpg,jpeg,png,JPG,JPEG,PNG}", GLOB_BRACE) as $file) {
+// Nederlandse dagnaam voor header
+$dagNL = [
+    0 => "Zondag",
+    1 => "Maandag",
+    2 => "Dinsdag",
+    3 => "Woensdag",
+    4 => "Donderdag",
+    5 => "Vrijdag",
+    6 => "Zaterdag"
+];
 
-        $filename  = basename($file);
-        $fileTime  = filemtime($file);
+$vandaag = $dagNL[(int)date("w")];
 
-        // Alleen foto's waarvan het bestand de laatste 10 minuten op de server is gezet
+// Foto’s ophalen uit ALLE dagmappen
+foreach ($folders as $folder) {
+    foreach (glob($folder . "/*.{jpg,jpeg,png,JPG,JPEG,PNG}", GLOB_BRACE) as $file) {
+
+        $fileTime = filemtime($file);
         if ($fileTime < $tenMinutesAgo) continue;
 
-        // Tijd uit bestandsnaam halen voor weergave
+        $filename = basename($file);
+
+        // Tijd uit bestandsnaam halen (HH_MM_SS)
         if (preg_match('/(\d{2})_(\d{2})_(\d{2})/', $filename, $match)) {
             $hour   = intval($match[1]);
             $minute = intval($match[2]);
@@ -56,14 +46,12 @@ if (is_dir($todayFolder)) {
     }
 }
 
-// Nieuwste foto eerst (op basis van tijd in bestandsnaam)
+// Sorteren op tijd (nieuwste eerst)
 usort($photos, function($a, $b) {
     $secA = $a["hour"] * 3600 + $a["minute"] * 60 + $a["second"];
     $secB = $b["hour"] * 3600 + $b["minute"] * 60 + $b["second"];
     return $secB - $secA;
 });
-
-$vandaag = $dagNL[$dayNames[$dayIndex]];
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -71,8 +59,6 @@ $vandaag = $dagNL[$dayNames[$dayIndex]];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Achtbaan Foto's</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/photo.css">
 </head>
 <body>
@@ -80,11 +66,12 @@ $vandaag = $dagNL[$dayNames[$dayIndex]];
 <header>
     <div class="header-inner">
         <h1>📸 Jouw Rit</h1>
-        <p class="subhead"><?php echo $vandaag; ?> &mdash; foto's van de afgelopen 10 minuten</p>
+        <p class="subhead"><?php echo $vandaag; ?> — foto's van de afgelopen 10 minuten</p>
     </div>
 </header>
 
 <main>
+
     <?php if (empty($photos)): ?>
         <div class="empty-state">
             <span class="empty-icon">🎢</span>
@@ -100,17 +87,16 @@ $vandaag = $dagNL[$dayNames[$dayIndex]];
             ?>
             <div class="photo-card" style="animation-delay: <?php echo $index * 0.07; ?>s">
                 <div class="photo-wrap">
-                    <img src="<?php echo htmlspecialchars($p['path']); ?>"
+                    <img src="<?php echo './' . htmlspecialchars($p['path']); ?>"
                          alt="Achtbaanfoto om <?php echo $time; ?>"
                          loading="lazy"
-                         onclick="openPopup('<?php echo htmlspecialchars($p['path']); ?>', '<?php echo $time; ?>')">
+                         onclick="openPopup('<?php echo './' . htmlspecialchars($p['path']); ?>', '<?php echo $time; ?>')">
                     <div class="photo-overlay">
                         <span>🔍 Bekijken</span>
                     </div>
                 </div>
                 <div class="photo-meta">
                     <span class="photo-time">🕐 <?php echo $time; ?></span>
-
                 </div>
             </div>
             <?php endforeach; ?>
@@ -155,7 +141,6 @@ function addToCart() {
     window.location.href = "add_cart.php?file=" + encodeURIComponent(selectedPhoto);
 }
 
-// Escape-toets sluit popup
 document.addEventListener("keydown", function(e) {
     if (e.key === "Escape") closePopup();
 });
