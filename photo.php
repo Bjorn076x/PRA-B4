@@ -1,14 +1,56 @@
 <?php
 date_default_timezone_set('Europe/Amsterdam');
 
-// Alle dagmappen in /foto ophalen
+//
+// ======================================================
+// 1. DEMO-FOTO GENERATOR (automatisch bij elke refresh)
+// ======================================================
+//
+
+$bronMap = "foto/4_Donderdag";
+
+// Verwijder oude demo-foto's
+foreach (glob($bronMap . "/*_demo_*.jpg") as $oud) {
+    unlink($oud);
+}
+
+// Haal originele foto's op (geen demo's)
+$allefotos = array_filter(
+    glob($bronMap . "/*.{jpg,jpeg,png,JPG,JPEG,PNG}", GLOB_BRACE),
+    fn($f) => strpos(basename($f), '_demo_') === false
+);
+
+shuffle($allefotos);
+$selectie = array_slice(array_values($allefotos), 0, 10);
+
+$now = time();
+
+foreach ($selectie as $i => $bronBestand) {
+    // Verspreid over de laatste 9 minuten
+    $secGeleden = $i * 54;
+    $tijd = $now - $secGeleden;
+
+    $uur  = date('H', $tijd);
+    $min  = date('i', $tijd);
+    $sec  = date('s', $tijd);
+    $id   = rand(1000, 9999);
+
+    $nieuweNaam = "{$bronMap}/{$uur}_{$min}_{$sec}_demo_id{$id}.jpg";
+    copy($bronBestand, $nieuweNaam);
+}
+
+//
+// ======================================================
+// 2. FOTO'S INLADEN (jouw bestaande code)
+// ======================================================
+//
+
 $baseFolder = "foto";
 $folders    = glob($baseFolder . "/*", GLOB_ONLYDIR);
 
 $photos = [];
 $tenMinutesAgo = time() - 600;
 
-// Nederlandse dagnaam voor header
 $dagNL = [
     0 => "Zondag",
     1 => "Maandag",
@@ -21,7 +63,6 @@ $dagNL = [
 
 $vandaag = $dagNL[(int)date("w")];
 
-// Foto’s ophalen uit ALLE dagmappen
 foreach ($folders as $folder) {
     foreach (glob($folder . "/*.{jpg,jpeg,png,JPG,JPEG,PNG}", GLOB_BRACE) as $file) {
 
@@ -30,7 +71,6 @@ foreach ($folders as $folder) {
 
         $filename = basename($file);
 
-        // Tijd uit bestandsnaam halen (HH_MM_SS)
         if (preg_match('/(\d{2})_(\d{2})_(\d{2})/', $filename, $match)) {
             $hour   = intval($match[1]);
             $minute = intval($match[2]);
@@ -46,7 +86,6 @@ foreach ($folders as $folder) {
     }
 }
 
-// Sorteren op tijd (nieuwste eerst)
 usort($photos, function($a, $b) {
     $secA = $a["hour"] * 3600 + $a["minute"] * 60 + $a["second"];
     $secB = $b["hour"] * 3600 + $b["minute"] * 60 + $b["second"];
