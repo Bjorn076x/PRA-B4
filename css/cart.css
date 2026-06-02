@@ -1,6 +1,26 @@
 /* --- Global --- */
+
+:root {
+    --bg: rgb(1, 1, 164);              /* Donker mosgroen */
+    --bg2: #0f1a14;             /* Warmer donkergroen */
+    --surface: rgba(12, 20, 16, 0.55);
+    --border: rgba(120, 200, 150, 0.25);
+    --accent: #7dffb0;          /* Warm mintgroen */
+    --accent-soft: #5ddf98;     /* Zachte glow */
+    --accent-glow: rgba(125, 255, 176, 0.45);
+    --text: #f2fff7;
+    --muted: #b8d7c7;
+    --radius: 14px;
+    --font-head: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+}
 body {
-    background:rgb(0, 0, 38);
+    background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
     color: #e8e8e8;
     font-family: 'Inter', sans-serif;
     margin: 0;
