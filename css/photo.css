@@ -2,7 +2,7 @@
    WARM CINEMATIC GREEN THEME
    ===================== */
 :root {
-    --bg: #0b120e;              /* Donker mosgroen */
+    --bg: rgb(1, 1, 164);              /* Donker mosgroen */
     --bg2: #0f1a14;             /* Warmer donkergroen */
     --surface: rgba(12, 20, 16, 0.55);
     --border: rgba(120, 200, 150, 0.25);
