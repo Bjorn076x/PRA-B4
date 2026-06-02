@@ -57,6 +57,7 @@ html, body {
 .banner {
     position: relative;
     width: min(520px, 90vw);
+    height: 80px; /* of een andere hoogte */
     border: 2px solid var(--accent);
     background: var(--banner-bg);
     backdrop-filter: blur(6px);
@@ -64,6 +65,8 @@ html, body {
     border-radius: 2px;
     box-shadow: 0 4px 32px rgba(0,0,0,.5), inset 0 0 40px rgba(232,201,106,.06);
     animation: fadeDown .8s ease both;
+    display: flex;
+    align-items: center;
 }
 
 .banner-img {
@@ -88,7 +91,13 @@ html, body {
 .banner-text {
     position: relative;
     z-index: 1;
-    padding: 1rem 1.6rem;
+    padding: 0 1.6rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
 }
 
 .banner-text p {

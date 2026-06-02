@@ -24,8 +24,10 @@
         <div class="banner-img"></div>
     </div>
 
-    <button class="btn-start" onclick="alert('Gestart!')">
-        <span>START</span>
+    <button class="btn-start" >
+        <span>START
+            <a href="photo.php"></a>
+        </span>
     </button>
 
     </div>
