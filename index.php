@@ -14,21 +14,21 @@
 
     <div class="bg"></div>
 
-        <div class="page">
+    <div class="page">
 
         <div class="banner">
             <div class="banner-text">
                 <p>Klik op Start</p>
                 <span>om verder te gaan</span>
             </div>
-        <div class="banner-img"></div>
-    </div>
+            <div class="banner-img"></div>
+        </div>
 
-    <button class="btn-start" >
-        <span>START
-            <a href="photo.php"></a>
-        </span>
-    </button>
+        <a href="photo.php">
+            <button class="btn-start">
+                <span>START</span>
+            </button>
+        </a>
 
     </div>
 
