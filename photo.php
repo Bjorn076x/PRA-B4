@@ -131,7 +131,7 @@ $vandaag = $dagNL[(int)date("w")];
         <p class="subhead">
             <?php 
             if ($filterDag === "") {
-                echo $vandaag . " — foto's van de afgelopen 10 minuten";
+                echo $vandaag . "  foto's van de afgelopen 10 minuten";
             } else {
                 echo "Gefilterd op: " . htmlspecialchars($filterDag);
                 if ($filterUur !== "") echo " — " . str_pad($filterUur,2,"0",STR_PAD_LEFT) . ":00";
@@ -143,31 +143,38 @@ $vandaag = $dagNL[(int)date("w")];
 
 <!-- FILTERBALK -->
 <form method="GET" class="filter-bar">
-    <label>Dag:</label>
-    <select name="dag">
-        <option value="">Laatste 10 minuten</option>
-        <?php foreach (glob("foto/*", GLOB_ONLYDIR) as $f): ?>
-            <?php $folderName = basename($f); ?>
-            <option value="<?php echo $folderName; ?>" 
-                <?php if ($filterDag === $folderName) echo "selected"; ?>>
-                <?php echo $folderName; ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
 
-    <label>Uur:</label>
-    <select name="uur">
-        <option value="">Alles</option>
-        <?php for ($i=0; $i<24; $i++): ?>
-            <option value="<?php echo $i; ?>" 
-                <?php if ($filterUur !== "" && intval($filterUur) === $i) echo "selected"; ?>>
-                <?php echo str_pad($i,2,"0",STR_PAD_LEFT); ?>:00
-            </option>
-        <?php endfor; ?>
-    </select>
+    <div class="filter-group">
+        <label for="dag">Dag</label>
+        <select name="dag" id="dag">
+            <option value="">Laatste 10 minuten</option>
+            <?php foreach (glob("foto/*", GLOB_ONLYDIR) as $f): ?>
+                <?php $folderName = basename($f); ?>
+                <option value="<?php echo $folderName; ?>" 
+                    <?php if ($filterDag === $folderName) echo "selected"; ?>>
+                    <?php echo $folderName; ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
 
-    <button type="submit">Filteren</button>
+    <div class="filter-group">
+        <label for="uur">Uur</label>
+        <select name="uur" id="uur">
+            <option value="">Alles</option>
+            <?php for ($i=0; $i<24; $i++): ?>
+                <option value="<?php echo $i; ?>" 
+                    <?php if ($filterUur !== "" && intval($filterUur) === $i) echo "selected"; ?>>
+                    <?php echo str_pad($i,2,"0",STR_PAD_LEFT); ?>:00
+                </option>
+            <?php endfor; ?>
+        </select>
+    </div>
+
+    <button class="filter-btn" type="submit">Filteren</button>
+
 </form>
+
 
 <main>
 
@@ -200,3 +207,50 @@ $vandaag = $dagNL[(int)date("w")];
             </div>
             <?php endforeach; ?>
         </div>
+    <?php endif; ?>
+</main>
+
+<!-- Popup -->
+<div id="popup" onclick="closePopupOutside(event)">
+    <div id="popup-content">
+        <button class="close-btn" onclick="closePopup()">✕</button>
+        <img id="popup-image" src="" alt="Geselecteerde foto">
+        <p id="popup-time"></p>
+        <div class="popup-actions">
+            <button class="btn-cart" onclick="addToCart()">🛒 In winkelmandje</button>
+            <button class="btn-close" onclick="closePopup()">Sluiten</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedPhoto = null;
+
+    function openPopup(src, timeAgo) {
+        selectedPhoto = src;
+        document.getElementById("popup-image").src = src;
+        document.getElementById("popup-time").textContent = timeAgo;
+        document.getElementById("popup").classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closePopup() {
+        document.getElementById("popup").classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    function closePopupOutside(e) {
+        if (e.target.id === "popup") closePopup();
+    }
+
+    function addToCart() {
+        window.location.href = "add_cart.php?file=" + encodeURIComponent(selectedPhoto);
+    }
+
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape") closePopup();
+    });
+</script>
+
+</body>
+</html>

@@ -1,13 +1,22 @@
 /* =====================
+   RESET SELECT BROWSER STYLE
+   ===================== */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* =====================
    WARM CINEMATIC GREEN THEME
    ===================== */
 :root {
-    --bg: rgb(1, 1, 164);              /* Donker mosgroen */
-    --bg2: #0f1a14;             /* Warmer donkergroen */
+    --bg: rgb(1, 1, 164);
+    --bg2: #0f1a14;
     --surface: rgba(12, 20, 16, 0.55);
     --border: rgba(120, 200, 150, 0.25);
-    --accent: #7dffb0;          /* Warm mintgroen */
-    --accent-soft: #5ddf98;     /* Zachte glow */
+    --accent: #7dffb0;
+    --accent-soft: #5ddf98;
     --accent-glow: rgba(125, 255, 176, 0.45);
     --text: #f2fff7;
     --muted: #b8d7c7;
@@ -52,6 +61,153 @@ header h1 {
     letter-spacing: 0.1em;
     text-transform: uppercase;
 }
+
+/* =====================
+   FILTER BAR
+   ===================== */
+.filter-bar {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: flex-end;
+    margin: 2rem auto 3rem;
+    padding: 1.5rem 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 25px rgba(0,0,0,0.35);
+    max-width: 900px;
+    animation: fadeUp 0.6s ease forwards;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.filter-group label {
+    font-size: 0.95rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-left: 4px;
+}
+
+/* =====================
+   SELECTS (DROPDOWNS)
+   ===================== */
+.filter-bar select {
+    padding: 0.7rem 1.2rem;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text) !important;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.25s ease;
+    backdrop-filter: blur(4px);
+    min-width: 180px;
+    height: 48px;
+}
+
+.filter-bar select:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* =====================
+   FILTER BAR
+   ===================== */
+.filter-bar {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: flex-end;
+    margin: 2rem auto 3rem;
+    padding: 1.5rem 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 25px rgba(0,0,0,0.35);
+    max-width: 900px;
+    animation: fadeUp 0.6s ease forwards;
+}
+
+/* Groepen */
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+/* Labels */
+.filter-group label {
+    font-size: 0.95rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-left: 4px;
+}
+
+/* =====================
+   DROPDOWNS (FIXED)
+   ===================== */
+.filter-bar select {
+    padding: 0.7rem 1.2rem;
+    background: rgba(255,255,255,0.22); /* ✔️ Lichter → tekst zichtbaar */
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text) !important;      /* ✔️ Tekst altijd zichtbaar */
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.25s ease;
+    backdrop-filter: blur(4px);
+    min-width: 200px;                   /* ✔️ Mooie breedte */
+    height: 48px;                       /* ✔️ Zelfde hoogte als knop */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Hover */
+.filter-bar select:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* =====================
+   FILTER BUTTON
+   ===================== */
+.filter-btn {
+    padding: 0.7rem 1.8rem;
+    height: 48px;
+    background: var(--accent);
+    color: #0b120e;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 0 18px var(--accent-glow);
+    transition: 0.25s ease;
+    white-space: nowrap;
+}
+
+.filter-btn:hover {
+    transform: translateY(-3px);
+    opacity: 0.9;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+}
+
 
 /* =====================
    MAIN
