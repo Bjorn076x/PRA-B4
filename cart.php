@@ -160,7 +160,7 @@ foreach ($cart as $item) {
                 <span id="grand-total">€<?= number_format($total, 2, ',', '.') ?></span>
             </div>
 
-            <a href="betalen.php" class="btn-pay">Betalen →</a>
+            <a href="payment.php" class="btn-pay">Betalen →</a>
             <a href="photo.php" class="continue-link">← Verder winkelen</a>
         </div>
 
