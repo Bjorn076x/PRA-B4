@@ -143,12 +143,7 @@ foreach ($cart as $item) {
                 <span>Totaal</span>
                 <span id="grand-total">€<?= number_format($total, 2, ',', '.') ?></span>
             </div>
-<<<<<<< Updated upstream
-
             <a href="payment.php" class="btn-pay">Betalen →</a>
-=======
-            <a href="betalen.php" class="btn-pay">Betalen →</a>
->>>>>>> Stashed changes
             <a href="photo.php" class="continue-link">← Verder winkelen</a>
         </div>
 
