@@ -1,12 +1,6 @@
 <?php
 date_default_timezone_set('Europe/Amsterdam');
 
-//
-// ======================================================
-// 1. DEMO-FOTO GENERATOR (automatisch bij elke refresh)
-// ======================================================
-//
-
 $bronMap = "foto/4_Donderdag";
 
 // Verwijder oude demo-foto's
@@ -14,7 +8,7 @@ foreach (glob($bronMap . "/*_demo_*.jpg") as $oud) {
     unlink($oud);
 }
 
-// Haal originele foto's op (geen demo's)
+// Haal originele foto's op
 $allefotos = array_filter(
     glob($bronMap . "/*.{jpg,jpeg,png,JPG,JPEG,PNG}", GLOB_BRACE),
     fn($f) => strpos(basename($f), '_demo_') === false
@@ -38,20 +32,13 @@ foreach ($selectie as $i => $bronBestand) {
     copy($bronBestand, $nieuweNaam);
 }
 
-//
-// ======================================================
 // 2. FILTERS INLADEN
-// ======================================================
-//
+
 
 $filterDag = $_GET['dag'] ?? "";
 $filterUur = $_GET['uur'] ?? "";
-
-//
-// ======================================================
 // 3. FOTO'S INLADEN
-// ======================================================
-//
+
 
 $baseFolder = "foto";
 $folders    = glob($baseFolder . "/*", GLOB_ONLYDIR);
