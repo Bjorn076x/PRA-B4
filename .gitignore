@@ -1,0 +1,8 @@
+# Gekopieerde cart foto's — niet pushen, map wel bewaren
+cart_fotos/*
+!cart_fotos/.gitkeep
+ 
+# Demo foto's
+foto/*/*_demo_*.jpg
+foto/*/*_demo_*.jpeg
+foto/*/*_demo_*.png
