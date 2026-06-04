@@ -194,9 +194,9 @@ $vandaag = $dagNL[(int)date("w")];
             <div class="photo-card" style="animation-delay: <?php echo $index * 0.07; ?>s">
                 <div class="photo-wrap">
                     <img src="<?php echo './' . htmlspecialchars($p['path']); ?>"
-                         alt="Achtbaanfoto om <?php echo $time; ?>"
-                         loading="lazy"
-                         onclick="openPopup('<?php echo './' . htmlspecialchars($p['path']); ?>', '<?php echo $time; ?>')">
+                        alt="Achtbaanfoto om <?php echo $time; ?>"
+                        loading="lazy"
+                        onclick="openPopup('<?php echo './' . htmlspecialchars($p['path']); ?>', '<?php echo $time; ?>')">
                     <div class="photo-overlay">
                         <span>🔍 Bekijken</span>
                     </div>
