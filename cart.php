@@ -103,8 +103,8 @@ foreach ($cart as $item) {
                 <div class="item-row">
 
                     <img src="/PRA-B4/<?= htmlspecialchars($src) ?>"
-                         alt="<?= htmlspecialchars($label) ?>"
-                         class="item-thumb">
+                        alt="<?= htmlspecialchars($label) ?>"
+                        class="item-thumb">
 
                     <div class="item-info">
                         <div class="name"><?= htmlspecialchars($label) ?></div>
