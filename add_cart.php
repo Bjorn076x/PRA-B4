@@ -18,7 +18,6 @@ if (!is_dir($cartFotoMap)) {
 
 
 // PAD OPSCHONEN
-
 $origineel = ltrim($_GET['file'], './');
 
 // Controleer of het bestand bestaat

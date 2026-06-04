@@ -83,7 +83,7 @@ foreach ($cart as $item) {
             <!-- Foto strip (max 3 previews) -->
             <div class="photo-strip">
                 <?php foreach (array_slice($cart, 0, 3) as $item): ?>
-                    <img src="/PRA-B4/<?= htmlspecialchars($item['file']) ?>" alt="Achtbaan foto">
+                    <img src="./<?= htmlspecialchars($item['file']) ?>" alt="Achtbaan foto">
                 <?php endforeach; ?>
             </div>
 
