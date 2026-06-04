@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 // CONFIGURATIE
 $price_per_photo = 2.50;
 
